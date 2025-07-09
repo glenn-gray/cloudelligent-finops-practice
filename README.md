@@ -15,10 +15,9 @@
 - **Cloud Eng**: Hamza Sarwar
 
 ### Key Documents
-- [Architecture Design](docs/openops-architecture.md)
-- [Implementation Guide](finops/implementation-guide.md)
-- [Project Plan](finops/project-plan.md)
-- [Audit Report](finops/audit-report.md)
+- [Architecture Design](finops/docs/architecture/openops-architecture.md)
+- [Implementation Guide](finops/delivery-blueprint/implementation-guide.md)
+- [Project Plan](finops/delivery-blueprint/project-plan.md)
 
 ## Quick Commands
 ```bash
