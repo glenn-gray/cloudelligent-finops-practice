@@ -19,18 +19,6 @@
 - [Implementation Guide](finops/delivery-blueprint/implementation-guide.md)
 - [Project Plan](finops/delivery-blueprint/project-plan.md)
 
-## Quick Commands
-```bash
-# View project status
-git status
-
-# Deploy OpenOps (manual process)
-# See implementation guide for details
-
-# Access AWS account
-aws sts get-caller-identity
-```
-
 ## Project Phases
 1. **Foundation** (Days 1-3): Infrastructure setup
 2. **Core Implementation** (Days 4-8): Priority use cases
