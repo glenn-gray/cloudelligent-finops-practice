@@ -1,6 +1,6 @@
-# AI Assistance Tools for FinOps Practice
+# AI Assistance Tools for OpenOps Integration
 
-This directory contains AI assistance tools, prompts, and scripts to accelerate the implementation of AWS FinOps solutions.
+This directory contains AI assistance tools, prompts, and scripts to accelerate the OpenOps platform evaluation and implementation.
 
 ## Prompts Directory
 
@@ -8,45 +8,46 @@ The `prompts` directory contains pre-crafted prompts for Amazon Q and GitHub Cop
 
 ### Amazon Q Prompts
 
-Use these prompts with Amazon Q in the AWS Console or IDE plugins. Copy and paste the prompt, replacing the placeholder text with your specific requirements.
+Use these prompts with Amazon Q for OpenOps configuration and evaluation tasks.
 
 Key prompt categories:
-- Infrastructure Code Generation
-- SOW Component Generation
-- Security Configuration Review
-- CI/CD Pipeline Setup
-- Cost Estimation
-- Refactoring Guidance
-- Cost Allocation Strategy
-- Savings Plan Analysis
+- OpenOps Configuration
+- AWS Integration Setup
+- Policy Engine Configuration
+- Workflow Builder Automation
+- Bedrock AI Integration
+- Performance Optimization
+- Troubleshooting Guidance
+- Comparative Analysis
 
 ### GitHub Copilot Prompts
 
-Use these prompts as comments in your code files to guide GitHub Copilot in generating relevant code. Type the comment and press Enter, then Copilot will suggest code based on the prompt.
+Use these prompts for OpenOps automation and integration code generation.
 
 Key prompt categories:
-- Infrastructure Code Generation
-- Cost Analysis Script
-- Tagging Policy
-- Reserved Instance Optimizer
-- Budget Alerts
-- Cost Anomaly Detection
-- Rightsizing Recommendations
-- Cost Dashboard
-- Savings Plan Calculator
+- OpenOps Policy Configuration
+- AWS Service Integration
+- Slack Webhook Integration
+- Jira API Integration
+- CloudWatch Event Processing
+- Terraform Automation Templates
+- Testing and Validation Scripts
+- Performance Monitoring
 
 ## Usage Instructions
 
-1. Navigate to the appropriate prompt file based on your task and AI tool
+1. Navigate to the appropriate prompt file for OpenOps tasks
 2. Copy the relevant prompt template
-3. Replace placeholder text with your specific requirements
-4. Paste into Amazon Q chat or as a comment for GitHub Copilot
-5. Review and refine the generated output
+3. Replace placeholders with OpenOps-specific requirements
+4. Use with Amazon Q or GitHub Copilot
+5. Adapt output for OpenOps evaluation context
 
-## Contributing New Prompts
+## OpenOps-Specific Prompts
 
-To add new prompts to this collection:
-1. Identify common, repeatable tasks in your workflow
-2. Create a clear, specific prompt with appropriate placeholders
-3. Test the prompt with actual use cases
-4. Add the prompt to the appropriate file with a descriptive heading
+Focus areas for OpenOps evaluation:
+1. Platform deployment and configuration
+2. AWS service integration patterns
+3. Policy engine rule creation
+4. Workflow automation design
+5. Performance testing and validation
+6. Comparative analysis with Archera
