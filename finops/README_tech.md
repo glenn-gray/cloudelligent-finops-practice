@@ -45,9 +45,6 @@ Cloudelligent-Production-infra/
 aws iam create-role --role-name OpenOpsExecutionRole \
   --assume-role-policy-document file://trust-policy.json
 
-# Deploy OpenOps platform
-./deploy.sh --account 052236698216 --region us-east-1
-
 # Set up Slack integration
 curl -X POST $SLACK_WEBHOOK_URL -d '{"text":"OpenOps test"}'
 ```
