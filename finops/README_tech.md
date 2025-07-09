@@ -8,14 +8,19 @@
 ## Quick Start
 
 ```bash
-# OpenOps is already deployed on:
-# Instance: i-04216b668db9a2b73 (us-east-1)
+# OpenOps is deployed on:
+# Instance: i-04216b668db9a2b73 (t3.large, us-east-1a)
+# Private IP: 10.0.130.121
+# IAM Role: openops-instance-role
 
-# Access the platform
-ssh ec2-user@i-04216b668db9a2b73
+# Access the platform (requires openops key pair)
+ssh -i ~/.ssh/openops.pem ec2-user@10.0.130.121
 
 # Check service status
 sudo systemctl status openops
+
+# Test AWS connectivity from instance
+aws sts get-caller-identity
 
 # Configure integrations (see implementation-guide.md)
 ```

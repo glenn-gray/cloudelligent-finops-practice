@@ -27,8 +27,13 @@
 4. **Evaluation** (Days 13-14): Decision point
 
 ## Platform Details
-**OpenOps Instance**: i-04216b668db9a2b73 (us-east-1)  
-**Deployment Status**: Active  
+**OpenOps Instance**: i-04216b668db9a2b73 (us-east-1a)  
+**Instance Type**: t3.large  
+**Status**: ✅ Running (reachability passed)  
+**IAM Role**: openops-instance-role  
+**Private IP**: 10.0.130.121  
+**Key Pair**: openops  
+**Security Groups**: openops-ec2-sg, default  
 **Next Steps**: Configure integrations and test use cases
 
 ## Repository Structure
