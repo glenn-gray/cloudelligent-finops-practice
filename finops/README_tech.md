@@ -22,17 +22,19 @@ cd openops
 
 ```
 Cloudelligent-Production-infra/
-├── docs/
-│   └── openops-architecture.md     # Architecture documentation
-├── finops/
-│   ├── README.md                   # This file
-│   ├── README_exec.md              # Executive overview
-│   ├── README_tech.md              # Technical details
-│   ├── implementation-guide.md     # Detailed implementation
-│   ├── project-plan.md             # Project timeline
-│   ├── audit-report.md             # Documentation audit
-│   └── ai-assist/                  # AI tools and prompts
-└── README.md                       # Project overview
+└── finops
+    ├── ai-assist
+    │   └── prompts
+    ├── ci-cd
+    ├── delivery-blueprint
+    │   └── epics
+    ├── docs
+    │   ├── architecture
+    │   └── architecture-decisions
+    ├── iac-templates
+    │   └── terraform
+    │       └── modules
+    └── sow-components
 ```
 
 ## Implementation Phases
