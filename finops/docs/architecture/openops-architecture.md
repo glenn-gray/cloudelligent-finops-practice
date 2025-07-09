@@ -87,11 +87,11 @@ sequenceDiagram
 
 ## 3. Migration Strategy and Phases
 
-### Phase 1: Foundation (Days 1-3)
-- Deploy OpenOps open-source version
-- Configure AWS IAM roles and permissions
-- Establish GitHub repository for Terraform templates
-- Set up basic Slack integration
+### Phase 1: Foundation (Days 1-3) - IN PROGRESS
+- ✅ OpenOps deployed on i-04216b668db9a2b73
+- 🔄 Configure AWS IAM roles and permissions
+- ✅ GitHub repository established
+- 🔄 Set up basic Slack integration
 
 ### Phase 2: Core Integration (Days 4-8)
 - Implement 5 priority use cases:
@@ -179,6 +179,7 @@ Required Permissions:
 
 ### Current Scope (Pilot)
 - Single AWS account (052236698216)
+- OpenOps instance: i-04216b668db9a2b73
 - 20 use cases maximum
 - Manual approval workflows
 - Basic notification channels
@@ -215,14 +216,15 @@ Required Permissions:
 
 ### Pre-requisites ✓
 - [x] AWS account access (052236698216)
-- [x] OpenOps deployed on EC2
+- [x] OpenOps deployed on i-04216b668db9a2b73
 - [x] GitHub repository access
-- [x] Slack workspace integration
+- [ ] Slack workspace integration (in progress)
 
 ### Phase 1 Tasks
-- [ ] IAM role configuration
+- [ ] IAM role configuration for i-04216b668db9a2b73
 - [ ] Basic policy templates
 - [ ] Slack webhook setup
+- [ ] Platform connectivity validation
 - [ ] Initial use case deployment
 
 ### Success Criteria

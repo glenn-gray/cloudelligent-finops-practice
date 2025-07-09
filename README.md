@@ -7,6 +7,7 @@
 **Timeline**: July 7-18, 2025 (14 days)  
 **Objective**: Evaluate OpenOps as alternative to Archera for FinOps automation  
 **Expected ROI**: 25-40% cost savings  
+**Platform Status**: ✅ Deployed on i-04216b668db9a2b73  
 
 ### Project Team
 - **PM**: Muhammad Waleed
@@ -20,10 +21,15 @@
 - [Project Plan](finops/delivery-blueprint/project-plan.md)
 
 ## Project Phases
-1. **Foundation** (Days 1-3): Infrastructure setup
+1. **Foundation** (Days 1-3): ✅ Platform deployed, configuration in progress
 2. **Core Implementation** (Days 4-8): Priority use cases
 3. **Advanced Features** (Days 9-12): AI/ITSM integration
 4. **Evaluation** (Days 13-14): Decision point
+
+## Platform Details
+**OpenOps Instance**: i-04216b668db9a2b73 (us-east-1)  
+**Deployment Status**: Active  
+**Next Steps**: Configure integrations and test use cases
 
 ## Repository Structure
 ```

@@ -1,200 +1,234 @@
-# Valuable Amazon Q Prompts for Cloudelligent
+# Amazon Q Prompts for OpenOps Integration Evaluation
 
-## SOW Generation Prompts
-
-```
-Analyze the following Avoma meeting transcript and generate SOW components for [CUSTOMER_NAME]:
-
-Transcript: [PASTE_AVOMA_TRANSCRIPT]
-
-Extract and create:
-1. Project scope and objectives
-2. Deliverables breakdown
-3. Timeline and milestones
-4. Resource requirements
-5. Success criteria
-6. Assumptions and constraints
-7. Risk assessment
-8. Pricing structure recommendations
-
-Format as professional SOW sections with:
-- Executive summary
-- Technical requirements
-- Implementation approach
-- Acceptance criteria
-```
-
-## Architecture Documentation Generation
+## OpenOps Platform Configuration
 
 ```
-Based on this Avoma transcript, draft architecture documentation for [CUSTOMER_NAME]:
+Configure existing OpenOps platform for evaluation:
 
-Transcript: [PASTE_AVOMA_TRANSCRIPT]
+Deployed Platform:
+- Instance: i-04216b668db9a2b73 (us-east-1)
+- Account: 052236698216
+- Status: Already deployed and running
+- Timeline: 14 days (July 7-18, 2025)
 
-Generate:
-1. Current state architecture (based on discussion)
-2. Target state architecture design
-3. Migration strategy and phases
-4. Technology stack recommendations
-5. Integration requirements
-6. Security and compliance considerations
-7. Scalability and performance requirements
-8. Cost optimization opportunities
+Configuration tasks:
+1. Verify OpenOps service status on EC2 instance
+2. Configure IAM permissions for automation
+3. Set up AWS service integrations
+4. Create initial policy templates
+5. Test platform connectivity and functionality
 
-Include Mermaid diagrams for:
-- High-level architecture
-- Data flow
-- Integration points
+Commands to run:
+- ssh into i-04216b668db9a2b73
+- sudo systemctl status openops
+- Configure AWS credentials for the instance
+- Test API connectivity
 ```
 
-## Implementation Guide Creation
+## AWS Service Integration Setup
 
 ```
-Create implementation guide based on discovered data for [CUSTOMER_NAME]:
+Configure AWS service integrations for deployed OpenOps platform:
 
-Data: [DISCOVERED_DATA]
+OpenOps Instance: i-04216b668db9a2b73
+Services to integrate:
+- CloudWatch (events and metrics)
+- Cost Explorer (cost data)
+- EC2 (instance management)
+- EBS (volume management)
+- S3 (bucket policies)
+- AWS Config (compliance)
+- Bedrock (AI optimization)
 
-Develop:
-1. Phase-by-phase implementation plan
-2. Prerequisites and dependencies
-3. Configuration steps
-4. Testing and validation procedures
-5. Go-live checklist
-6. Post-implementation support
-7. Knowledge transfer plan
-8. Troubleshooting guide
+Integration steps:
+1. Configure IAM role for i-04216b668db9a2b73
+2. Set up CloudWatch event rules targeting OpenOps
+3. Test Cost Explorer API access from instance
+4. Configure service-specific permissions
+5. Validate integration connectivity
 
-Prioritize based on:
-- Business impact
-- Technical complexity
-- Resource availability
-- Risk mitigation
+Validation commands:
+- aws sts get-caller-identity (from instance)
+- aws ce get-cost-and-usage --time-period Start=2025-07-01,End=2025-07-08
+- aws ec2 describe-instances --instance-ids i-04216b668db9a2b73
 ```
 
-## Executive Summary Generation
+## Policy Engine Configuration
 
 ```
-Generate an executive summary for [CUSTOMER_NAME] stakeholders based on this discovered data:
+Create OpenOps policy engine rules for these use cases:
 
-Data: [DISCOVERED_DATA]
+Priority Use Cases:
+1. Idle EC2 detection and shutdown (>24h, <5% CPU)
+2. Unattached EBS volume cleanup (>7 days)
+3. Cost threshold alerts (daily spend >$1000)
+4. Untagged resource enforcement
+5. Public S3 bucket remediation
+
+For each use case, generate:
+1. Detection logic and thresholds
+2. Approval workflow requirements
+3. Remediation actions
+4. Notification configurations
+5. Rollback procedures
+
+Format as OpenOps policy JSON configurations.
+```
+
+## Workflow Builder Automation
+
+```
+Design OpenOps workflow automation for evaluation:
+
+Workflow Pattern: CloudWatch Event → Policy Evaluation → Approval → Action → Notification
+
+Create workflows for:
+1. Cost anomaly detection and response
+2. Resource compliance enforcement
+3. Automated rightsizing recommendations
+4. Security remediation workflows
+5. Budget threshold management
 
 Include:
-1. Project overview and business value
-2. Key modernization benefits
-3. High-level approach and timeline
-4. Resource and investment summary
-5. Critical success factors
-6. Risk management strategy
-7. Next steps and recommendations
-
-Format for C-level executives with focus on business outcomes and ROI.
+- Visual workflow diagrams
+- Decision tree logic
+- Integration points (Slack, Jira)
+- Error handling and retries
+- Performance optimization
 ```
 
-## Project Plan Creation
+## Bedrock AI Integration
 
 ```
-Create detailed project plan and timeline for [CUSTOMER_NAME] based on this discovered data:
+Integrate AWS Bedrock AI with OpenOps for intelligent cost optimization:
 
-Data: [DISCOVERED_DATA]
+AI Use Cases:
+- EC2 rightsizing recommendations based on usage patterns
+- Cost anomaly detection and root cause analysis
+- Predictive cost modeling and alerts
+- Resource optimization suggestions
+- Policy effectiveness analysis
 
 Generate:
-1. Project phases and milestones
-2. Task breakdown with dependencies
-3. Resource allocation by phase
-4. Critical path analysis
-5. Risk points and contingency planning
-6. Approval gates and decision points
-7. Reporting and governance structure
+1. Bedrock model selection (Claude, Titan)
+2. API integration patterns
+3. Data preprocessing requirements
+4. AI prompt engineering for cost optimization
+5. Response processing and action triggers
 
-Format as structured project plan with Gantt chart visualization.
+Focus on practical AI applications for 14-day evaluation.
 ```
 
-## Business Architecture Diagram Creation
+## Performance Optimization
 
 ```
-Create business architecture diagrams for [CUSTOMER_NAME] showing:
+Optimize OpenOps platform performance for evaluation metrics:
 
-1. How the system connects business needs to technical delivery
-2. Value flow from practice kits to customer outcomes
-3. Governance and quality assurance mechanisms
+Target Performance:
+- Event processing: <30 seconds
+- Remediation execution: <5 minutes
+- Notification delivery: <10 seconds
+- Policy evaluation: <15 seconds
 
-Use mermaid syntax for:
-- Business architecture overview
-- Value flow visualization
-- Governance mechanisms
-- Executive view
+Optimize:
+1. CloudWatch event processing efficiency
+2. AWS API call optimization
+3. Database query performance
+4. Workflow execution speed
+5. Integration response times
+
+Generate monitoring and alerting for performance KPIs.
 ```
 
-## Terraform Module Generation
+## Troubleshooting Guidance
 
 ```
-Generate Terraform modules for [CUSTOMER_NAME] with the following requirements:
-- AWS Services: [LIST_AWS_SERVICES]
-- Environment: [ENVIRONMENT_TYPE]
-- Compliance: [COMPLIANCE_REQUIREMENTS]
+Create troubleshooting guide for OpenOps evaluation:
+
+Common Issues:
+- Platform deployment failures
+- AWS permission errors
+- Integration connectivity problems
+- Policy execution failures
+- Performance bottlenecks
+
+For each issue, provide:
+1. Symptom identification
+2. Root cause analysis steps
+3. Resolution procedures
+4. Prevention strategies
+5. Escalation procedures
+
+Include diagnostic commands and log analysis techniques.
+```
+
+## Comparative Analysis with Archera
+
+```
+Generate comparative analysis framework for OpenOps vs Archera:
+
+Evaluation Criteria:
+- Cost savings potential (target: 15-30%)
+- Automation coverage (target: >80%)
+- Integration complexity
+- Platform costs (licensing)
+- Team adoption feasibility
+- Long-term scalability
 
 Create:
-1. Main module configuration
-2. Variables and outputs
-3. Security configurations
-4. Tagging strategy
-5. Documentation
+1. Feature comparison matrix
+2. ROI calculation methodology
+3. Risk assessment framework
+4. Decision criteria weighting
+5. Recommendation template
 
-Follow AWS best practices for:
-- Resource naming conventions
-- Security group configurations
-- IAM least privilege
-- Encryption at rest and in transit
+Format as executive decision document with clear go/no-go criteria.
 ```
 
-## GitLab CI/CD Pipeline Configuration
+## Integration Testing Scripts
 
 ```
-Generate GitLab CI/CD pipeline for [CUSTOMER_NAME]:
-- Deployment environments: dev, test, prod
-- Testing requirements: unit, integration, security
-- AWS services: [LIST_SERVICES]
+Generate testing scripts for deployed OpenOps platform:
+
+OpenOps Instance: i-04216b668db9a2b73
+Test Categories:
+1. Platform connectivity and health checks
+2. AWS service integration validation
+3. Policy engine functionality tests
+4. End-to-end workflow testing
+5. Performance benchmarking
+
+Create test scripts:
+- Platform health check: curl http://i-04216b668db9a2b73:8080/health
+- AWS connectivity test from instance
+- Policy execution validation
+- Integration endpoint testing
+- Performance monitoring setup
+
+Validation procedures:
+- SSH access to i-04216b668db9a2b73
+- Service status verification
+- Log file analysis
+- API response testing
+```
+
+## Project Documentation Generation
+
+```
+Generate project documentation for OpenOps evaluation:
+
+Based on project data:
+- Timeline: 14 days (July 7-18, 2025)
+- Team: Muhammad Waleed (PM), Glenn Gray (SA), Anas Ahmed (DevOps), Hamza Sarwar (Cloud Eng)
+- Objective: OpenOps vs Archera evaluation
 
 Create:
-1. .gitlab-ci.yml configuration
-2. Build and test stages
-3. Deployment automation
-4. Security scanning integration
-5. Notification configurations
-```
+1. Executive summary for leadership
+2. Technical implementation guide
+3. Project timeline with milestones
+4. Risk assessment and mitigation
+5. Success metrics and KPIs
+6. Final recommendation framework
 
-## Practice Kit Customization
-
-```
-Customize [PRACTICE_KIT] for [CUSTOMER_NAME]:
-- Industry: [INDUSTRY_TYPE]
-- Compliance requirements: [COMPLIANCE_STANDARDS]
-- Specific use cases: [USE_CASES]
-
-Generate:
-1. Industry-specific configurations
-2. Compliance control implementations
-3. Custom workflows
-4. Specialized monitoring
-5. Reporting customizations
-```
-
-## Audit and Documentation Review
-
-```
-Audit all README.md files across all directories and subdirectories in the Cloudelligent project.
-
-🎯 Objectives
-Perform a structured audit of implementation tool/function references to ensure they are:
-- Clearly referenced (not implied or missing)
-- Correctly named and described
-- Logically connected to the documented workflows
-- Accurately located in the filesystem
-- Consistent across practice kits and modules
-
-Generate a comprehensive report with:
-1. Executive summary of findings
-2. Detailed issues list
-3. Recommendations for improvements
-4. Implementation priority matrix
+Format for stakeholder communication and decision-making.
 ```

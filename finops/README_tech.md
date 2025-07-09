@@ -8,12 +8,14 @@
 ## Quick Start
 
 ```bash
-# Clone OpenOps repository
-git clone https://github.com/openops-cloud/openops
-cd openops
+# OpenOps is already deployed on:
+# Instance: i-04216b668db9a2b73 (us-east-1)
 
-# Deploy to AWS account
-./deploy.sh --account 052236698216 --region us-east-1
+# Access the platform
+ssh ec2-user@i-04216b668db9a2b73
+
+# Check service status
+sudo systemctl status openops
 
 # Configure integrations (see implementation-guide.md)
 ```
@@ -39,11 +41,17 @@ Cloudelligent-Production-infra/
 
 ## Implementation Phases
 
-### Phase 1: Foundation (Days 1-3)
+### Phase 1: Foundation (Days 1-3) - IN PROGRESS
 ```bash
-# Configure IAM role
+# Platform already deployed on i-04216b668db9a2b73
+# Configure IAM role for the instance
 aws iam create-role --role-name OpenOpsExecutionRole \
   --assume-role-policy-document file://trust-policy.json
+
+# Attach role to existing instance
+aws ec2 associate-iam-instance-profile \
+  --instance-id i-04216b668db9a2b73 \
+  --iam-instance-profile Name=OpenOpsExecutionRole
 
 # Set up Slack integration
 curl -X POST $SLACK_WEBHOOK_URL -d '{"text":"OpenOps test"}'
