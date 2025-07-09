@@ -22,8 +22,6 @@ Technical implementation of OpenOps platform for FinOps automation evaluation.
 git clone https://github.com/openops-cloud/openops
 cd openops
 
-# Deploy to AWS account 052236698216
-./deploy.sh --account 052236698216 --region us-east-1
 
 # Configure integrations
 # See implementation-guide.md for detailed steps
@@ -53,7 +51,7 @@ cd openops
 - OpenOps vs Archera comparison
 - Final recommendations
 
-**Detailed Implementation**: See [implementation-guide.md](implementation-guide.md)
+**Detailed Implementation**: See [implementation-guide.md](delivery-blueprint/implementation-guide.md)
 
 ## AI Integration
 
@@ -63,7 +61,7 @@ cd openops
 - Automated policy optimization
 
 ### AI Assistance Tools
-Located in [`ai-assist/`](ai-assist/):
+Located in [`ai-assist/`](ai-assist/prompts/amazon-q-prompts.md):
 - Amazon Q prompts for OpenOps configuration
 - GitHub Copilot integration patterns
 - Automated workflow generation
@@ -83,9 +81,9 @@ Located in [`ai-assist/`](ai-assist/):
 ## Project Documentation
 
 ### Architecture & Planning
-- [Architecture Design](../docs/openops-architecture.md)
-- [Project Plan](project-plan.md)
-- [Implementation Guide](implementation-guide.md)
+- [Architecture Design](docs/architecture/openops-architecture.md)
+- [Project Plan](delivery-blueprint/project-plan.md)
+- [Implementation Guide](delivery-blueprint/implementation-guide.md)
 
 ### Evaluation Criteria
 - Cost savings potential (target: 15-30%)
