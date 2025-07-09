@@ -41,12 +41,17 @@ aws sts get-caller-identity
 ## Repository Structure
 ```
 Cloudelligent-Production-infra/
-├── docs/
-│   └── openops-architecture.md     # Architecture documentation
-├── finops/
-│   ├── implementation-guide.md     # Technical implementation
-│   ├── project-plan.md            # Detailed project timeline
-│   ├── audit-report.md            # Documentation audit
-│   └── ai-assist/                 # AI prompts and tools
-└── README.md                      # This file
+└── finops
+    ├── ai-assist
+    │   └── prompts
+    ├── ci-cd
+    ├── delivery-blueprint
+    │   └── epics
+    ├── docs
+    │   ├── architecture
+    │   └── architecture-decisions
+    ├── iac-templates
+    │   └── terraform
+    │       └── modules
+    └── sow-components
 ```
