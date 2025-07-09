@@ -93,7 +93,7 @@ Format for C-level executives with focus on business outcomes and ROI.
 ## Project Plan Creation
 
 ```
-Create detailed project plan and timeline for [CUSTOMER_NAME] based on based on this discovered data:
+Create detailed project plan and timeline for [CUSTOMER_NAME] based on this discovered data:
 
 Data: [DISCOVERED_DATA]
 
