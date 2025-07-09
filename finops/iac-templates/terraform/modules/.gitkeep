@@ -1,0 +1,9 @@
+# Terraform Modules
+
+This directory contains reusable Terraform modules for the FinOps practice kit.
+
+## Structure
+- Cost monitoring and alerting
+- Budget management resources
+- Tagging policy enforcement
+- Cost optimization tools

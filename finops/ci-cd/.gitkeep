@@ -1,0 +1,9 @@
+# CI/CD Pipeline Configurations
+
+This directory contains CI/CD pipeline configurations and deployment scripts for the FinOps practice kit.
+
+## Structure
+- Cost optimization automation pipelines
+- Budget monitoring and alerting
+- Resource tagging enforcement
+- Cost reporting automation
