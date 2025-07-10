@@ -30,19 +30,19 @@
 ## Configuration Files Created
 
 ### Platform Configuration
-- `openops-config.yml` - Main platform configuration
-- `setup-scripts/configure-openops.sh` - Installation script
-- `test-scripts/validate-platform.sh` - Validation script
+- `iac-templates/openops/openops-config.yml` - Main platform configuration
+- `iac-templates/openops/setup-scripts/configure-openops.sh` - Installation script
+- `iac-templates/openops/test-scripts/validate-platform.sh` - Validation script
 
 ### Policy Templates
-- `policies/idle-ec2-policy.json` - Idle EC2 detection and remediation
-- `policies/cost-threshold-policy.json` - Daily cost threshold alerts
+- `iac-templates/openops/policies/idle-ec2-policy.json` - Idle EC2 detection and remediation
+- `iac-templates/openops/policies/cost-threshold-policy.json` - Daily cost threshold alerts
 
 ## Next Steps
 
 ### Immediate Actions (Today)
 1. **Connect to instance**: `ssh -i ~/.ssh/openops.pem ec2-user@10.0.130.121`
-2. **Run setup script**: Execute configure-openops.sh
+2. **Run setup script**: Execute `iac-templates/openops/setup-scripts/configure-openops.sh`
 3. **Verify service status**: `sudo systemctl status openops`
 4. **Test AWS connectivity**: `aws sts get-caller-identity`
 
