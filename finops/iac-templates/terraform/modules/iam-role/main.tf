@@ -60,13 +60,37 @@ resource "aws_iam_policy" "openops_automation" {
   })
 }
 
-# Attach policy to existing role
+# Create ECS Task Role
+resource "aws_iam_role" "openops_task" {
+  name = var.openops_role_name
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = var.tags
+}
+
+# Attach policy to ECS task role
 resource "aws_iam_role_policy_attachment" "openops_automation" {
-  role       = var.openops_role_name
+  role       = aws_iam_role.openops_task.name
   policy_arn = aws_iam_policy.openops_automation.arn
 }
 
-# Output the policy ARN
+# Outputs
 output "policy_arn" {
   value = aws_iam_policy.openops_automation.arn
+}
+
+output "role_arn" {
+  value = aws_iam_role.openops_task.arn
 }

@@ -5,7 +5,7 @@
 ## Current Status
 
 **Phase 1 Foundation**: ✅ COMPLETE
-- Platform deployed (i-04216b668db9a2b73), AWS integrated, Terraform deployed
+- Platform deployed (ECS Fargate), AWS integrated, Terraform deployed
 
 **Phase 2 Core Use Cases**: 🔄 IN PROGRESS  
 - Slack integration → Idle EC2 → Cost alerts → EBS cleanup → S3 security
@@ -17,9 +17,9 @@
 
 ```bash
 # Platform access
-ssh ec2-user@10.0.130.121
-sudo systemctl status openops
-curl http://localhost:8080/api/status
+aws ecs describe-services --cluster openops-finops-cluster --services openops-finops-service
+aws logs tail /ecs/openops-finops --follow
+# API access via ALB or service discovery
 ```
 
 ## Implementation Docs
@@ -36,8 +36,8 @@ curl http://localhost:8080/api/status
 
 ## Platform Details
 
-**Instance**: i-04216b668db9a2b73 (t3.large, us-east-1a)  
-**IAM**: Enhanced with OpenOpsAutomationPolicy  
+**Deployment**: ECS Fargate (openops-finops-cluster)  
+**IAM**: openops-ecs-task-role with OpenOpsAutomationPolicy  
 **Integrations**: ✅ AWS services, CloudWatch Events, SNS, Budget monitoring  
 **Pending**: Slack webhook configuration
 

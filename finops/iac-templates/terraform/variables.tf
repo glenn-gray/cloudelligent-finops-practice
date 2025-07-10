@@ -10,22 +10,22 @@ variable "aws_account_id" {
   default     = "052236698216"
 }
 
-variable "openops_instance_id" {
-  description = "OpenOps EC2 instance ID"
+variable "openops_cluster_name" {
+  description = "OpenOps ECS cluster name"
   type        = string
-  default     = "i-04216b668db9a2b73"
+  default     = "openops-finops-cluster"
 }
 
-variable "openops_instance_ip" {
-  description = "OpenOps instance private IP"
+variable "openops_service_name" {
+  description = "OpenOps ECS service name"
   type        = string
-  default     = "10.0.130.121"
+  default     = "openops-finops-service"
 }
 
 variable "openops_role_name" {
-  description = "Name of the existing OpenOps IAM role"
+  description = "Name of the OpenOps ECS task role"
   type        = string
-  default     = "openops-instance-role"
+  default     = "openops-ecs-task-role"
 }
 
 variable "notification_email" {

@@ -1,11 +1,11 @@
 # OpenOps Configuration Status
 
-**Instance**: i-04216b668db9a2b73 (t3.large, us-east-1a) | **Account**: 052236698216
+**Deployment**: ECS Fargate (openops-finops-cluster) | **Account**: 052236698216
 
 ## Phase 1 Foundation - ✅ COMPLETE
 
-- [x] OpenOps service running (port 8080)
-- [x] Enhanced IAM permissions (OpenOpsAutomationPolicy)
+- [x] OpenOps ECS service running (Fargate)
+- [x] Enhanced IAM permissions (openops-ecs-task-role)
 - [x] AWS integrations validated (EC2, S3, Cost Explorer, CloudWatch)
 - [x] CloudWatch Events + SNS configured
 - [x] Budget monitoring active ($1000 daily)
@@ -28,7 +28,7 @@ export SLACK_WEBHOOK_URL="https://hooks.slack.com/..."
 export JIRA_API_TOKEN="your-token"
 
 # Validation commands
-curl http://localhost:8080/api/status
+aws ecs describe-services --cluster openops-finops-cluster --services openops-finops-service
 aws sts get-caller-identity
 aws ce get-cost-and-usage --time-period Start=2025-07-01,End=2025-07-08
 ```

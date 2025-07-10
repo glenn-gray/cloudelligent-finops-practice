@@ -1,7 +1,7 @@
 variable "openops_role_name" {
-  description = "Name of the existing OpenOps IAM role"
+  description = "Name of the OpenOps ECS task role"
   type        = string
-  default     = "openops-instance-role"
+  default     = "openops-ecs-task-role"
 }
 
 variable "tags" {

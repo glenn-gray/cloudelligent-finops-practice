@@ -10,8 +10,8 @@
 
 ## Platform Details
 
-**Instance**: i-04216b668db9a2b73 (t3.large, us-east-1a)  
-**Status**: ✅ Running | **IAM**: openops-instance-role | **IP**: 10.0.130.121
+**Deployment**: ECS Fargate (openops-finops-cluster)  
+**Status**: ✅ Running | **IAM**: openops-ecs-task-role | **Service**: openops-finops-service
 
 ## Team & Documents
 
