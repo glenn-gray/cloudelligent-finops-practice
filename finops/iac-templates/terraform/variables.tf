@@ -41,6 +41,6 @@ variable "common_tags" {
     Project     = "OpenOps-FinOps-Evaluation"
     Environment = "evaluation"
     Owner       = "cloudelligent"
-    Instance    = "i-04216b668db9a2b73"
+    Deployment  = "ECS-Fargate"
   }
 }

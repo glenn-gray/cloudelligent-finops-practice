@@ -25,15 +25,18 @@ provider "aws" {
   }
 }
 
-# Data sources for existing VPC
-data "aws_vpc" "default" {
-  default = true
+# Data sources for existing OpenOps VPC
+data "aws_vpc" "openops" {
+  filter {
+    name   = "tag:Name"
+    values = ["OpenOps-vpc"]
+  }
 }
 
-data "aws_subnets" "private" {
+data "aws_subnets" "openops" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+    values = [data.aws_vpc.openops.id]
   }
 }
 
@@ -50,9 +53,9 @@ module "ecs_cluster" {
   source = "./modules/ecs-cluster"
   
   region                 = var.aws_region
-  vpc_id                = data.aws_vpc.default.id
-  vpc_cidr              = data.aws_vpc.default.cidr_block
-  private_subnet_ids    = data.aws_subnets.private.ids
+  vpc_id                = data.aws_vpc.openops.id
+  vpc_cidr              = data.aws_vpc.openops.cidr_block
+  private_subnet_ids    = data.aws_subnets.openops.ids
   openops_task_role_arn = module.iam_role.role_arn
   tags                  = var.common_tags
 }
