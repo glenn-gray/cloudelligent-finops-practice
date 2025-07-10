@@ -1,79 +1,35 @@
-# OpenOps AWS Integration - Terraform Modules
+# OpenOps Terraform Infrastructure
 
-**Instance**: i-04216b668db9a2b73 (t3.large, us-east-1a)  
-**Account**: 052236698216  
-**Purpose**: Configure AWS service integrations for OpenOps platform
+**Instance**: i-04216b668db9a2b73 | **Account**: 052236698216 | **Status**: ✅ Deployed
 
-## Modules
-
-### 1. IAM Role (`modules/iam-role/`)
-- Enhances existing `openops-instance-role` with automation permissions
-- Grants access to EC2, S3, CloudWatch, Cost Explorer, Config, Bedrock
-- Follows least privilege principle
-
-### 2. CloudWatch Events (`modules/cloudwatch-events/`)
-- Creates event rules for EC2 state changes, cost anomalies, EBS events
-- Sets up SNS topic for notifications
-- Configures targets for OpenOps integration
-
-## Quick Deployment
+## Quick Deploy
 
 ```bash
-# Navigate to terraform directory
-cd finops/iac-templates/terraform
-
-# Deploy all modules
-./deploy.sh
-
-# Or manual deployment
 terraform init
 terraform plan
 terraform apply
 ```
 
-## Validation Commands
-
-After deployment, test from OpenOps instance:
-
-```bash
-# Test IAM permissions
-aws sts get-caller-identity
-
-# Test Cost Explorer
-aws ce get-cost-and-usage --time-period Start=2025-07-01,End=2025-07-08 --granularity DAILY --metrics BlendedCost
-
-# Test EC2 permissions
-aws ec2 describe-instances --instance-ids i-04216b668db9a2b73
-
-# Test S3 access
-aws s3 ls
-
-# Test CloudWatch
-aws logs describe-log-groups --limit 5
-```
-
 ## Resources Created
 
-- **IAM Policy**: OpenOpsAutomationPolicy
-- **CloudWatch Event Rules**: EC2, Cost Anomaly, EBS events
+- **IAM Policy**: OpenOpsAutomationPolicy (attached to openops-instance-role)
+- **CloudWatch Events**: EC2, EBS, Cost Anomaly detection
 - **SNS Topic**: openops-finops-notifications
-- **Budget**: openops-daily-budget ($1000 daily limit)
+- **Budget**: $1000 daily threshold with email alerts
 
-## Integration Points
+## Validation
 
-- **CloudWatch Events** → **SNS Topic** → **OpenOps Webhook**
-- **Cost Explorer API** → **OpenOps Cost Analysis**
-- **EC2 API** → **OpenOps Instance Management**
-- **S3 API** → **OpenOps Security Remediation**
+```bash
+# Test permissions from OpenOps instance
+aws sts get-caller-identity
+aws ce get-cost-and-usage --time-period Start=2025-07-01,End=2025-07-08
+aws ec2 describe-instances --instance-ids i-04216b668db9a2b73
+aws s3 ls
+```
 
-## Next Steps
+## Modules
 
-1. Deploy Terraform modules
-2. Test AWS service connectivity
-3. Configure Slack webhook integration
-4. Implement Phase 2 use cases
-5. Validate end-to-end workflows
+- `modules/iam-role/` - Enhanced automation permissions
+- `modules/cloudwatch-events/` - Event rules and SNS integration
 
----
-
-**Status**: Ready for deployment to enhance OpenOps AWS integration capabilities
+**Status**: Infrastructure deployed successfully. OpenOps instance has enhanced AWS permissions for Phase 2 automation.

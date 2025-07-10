@@ -1,265 +1,77 @@
-# OpenOps Integration Evaluation - Architecture Documentation
+# OpenOps Architecture
 
-**Project:** OpenOps Integration Evaluation  
-**Region:** us-east-1  
-**Account:** 052236698216 (Cloudelligent-Production)  
-**Duration:** July 7-18, 2025  
+**Objective**: Evaluate OpenOps vs Archera | **Timeline**: 14 days | **Account**: 052236698216
 
-## Executive Summary
-
-This document outlines the architecture for evaluating OpenOps as a CloudOps/FinOps automation platform, comparing it against Archera for potential adoption at Cloudelligent.
-
-## 1. Current State Architecture
-
-### Existing Infrastructure
-- **Primary Platform:** Archera (current FinOps solution)
-- **Cloud Provider:** AWS (us-east-1)
-- **Account:** Cloudelligent-Production (052236698216)
-- **Repository:** GitHub (cloudelligent organization)
-- **Communication:** Slack workspace integration
+## Architecture Overview
 
 ```mermaid
 graph TB
-    A[AWS Account 052236698216] --> B[Archera Platform]
-    A --> C[CloudWatch/CloudTrail]
-    B --> D[Cost Reports]
-    C --> E[Manual Remediation]
-    F[GitHub Repos] --> G[Terraform IaC]
-    H[Slack] --> I[Manual Notifications]
-```
-
-## 2. Target State Architecture
-
-### OpenOps Integration Design
-
-```mermaid
-graph TB
-    subgraph "AWS Environment"
-        A[CloudWatch Events] --> B[OpenOps Platform]
-        C[CloudTrail] --> B
-        D[AWS Config] --> B
-        E[Cost & Billing] --> B
-    end
-    
-    subgraph "OpenOps Core"
-        B --> F[Policy Engine]
-        F --> G[Workflow Builder]
-        G --> H[Action Executor]
+    subgraph "AWS Services"
+        CW[CloudWatch Events] --> OO[OpenOps Engine]
+        CE[Cost Explorer] --> OO
+        EC2[EC2] <--> OO
+        EBS[EBS] <--> OO
+        S3[S3] <--> OO
     end
     
     subgraph "Integrations"
-        H --> I[Terraform Automation]
-        H --> J[Slack Notifications]
-        H --> K[Jira ITSM]
-        H --> L[AWS Bedrock AI]
+        OO --> SNS[SNS] --> SLACK[Slack]
+        OO --> JIRA[Jira ITSM]
+        OO --> BR[Bedrock AI]
+        OO --> TF[Terraform]
     end
-    
-    subgraph "Storage & Repos"
-        I --> M[GitHub Repository]
-        N[Remediation Templates] --> M
-    end
-    
-    J --> O[Approval Workflows]
-    O --> H
 ```
 
-### Data Flow Architecture
-
-```mermaid
-sequenceDiagram
-    participant CW as CloudWatch
-    participant OO as OpenOps
-    participant PE as Policy Engine
-    participant WF as Workflow
-    participant TF as Terraform
-    participant SL as Slack
-    participant JR as Jira
-    
-    CW->>OO: Resource Event
-    OO->>PE: Evaluate Policy
-    PE->>WF: Trigger Workflow
-    WF->>SL: Send Approval Request
-    SL->>WF: User Approval
-    WF->>TF: Execute Remediation
-    WF->>JR: Create Ticket
-    TF->>OO: Completion Status
-```
-
-## 3. Migration Strategy and Phases
-
-### Phase 1: Foundation (Days 1-3) - IN PROGRESS
-- ✅ OpenOps deployed on i-04216b668db9a2b73
-- 🔄 Configure AWS IAM roles and permissions
-- ✅ GitHub repository established
-- 🔄 Set up basic Slack integration
-
-### Phase 2: Core Integration (Days 4-8)
-- Implement 5 priority use cases:
-  - Idle EC2 detection/shutdown
-  - Unattached EBS cleanup
-  - Untagged resource policies
-  - Cost threshold alerts
-  - Public S3 bucket remediation
-
-### Phase 3: Advanced Features (Days 9-12)
-- AWS Bedrock AI integration for rightsizing
-- Jira ITSM workflow integration
-- Advanced approval workflows via Slack
-- Terraform automation templates
-
-### Phase 4: Evaluation (Days 13-14)
-- Comparative analysis vs Archera
-- Performance and cost assessment
-- Final recommendations
-
-## 4. Technology Stack
-
-### Core Components
-- **Platform:** OpenOps (open-source)
-- **Infrastructure:** AWS EC2 (existing deployment)
-- **IaC:** Terraform + CloudFormation
-- **Version Control:** GitHub
-- **Communication:** Slack + ServiceDesk integration
-- **ITSM:** Jira
-- **AI/ML:** AWS Bedrock
-
-### Integration APIs
-- AWS SDK/CLI
-- OpenOps REST API
-- Slack Webhooks
-- Jira REST API
-- GitHub API
-
-## 5. Integration Requirements
-
-### AWS Services Integration
-```yaml
-Required Permissions:
-  - EC2: describe, stop, terminate, modify
-  - EBS: describe, delete, create-snapshot
-  - S3: list, get-bucket-policy, put-bucket-policy
-  - IAM: list, describe (read-only)
-  - CloudWatch: describe, put-metric-data
-  - Config: describe, put-evaluations
-```
-
-### External Integrations
-- **Slack:** Webhook URL, Bot token for approvals
-- **Jira:** API token, Project keys
-- **GitHub:** SSH keys, Repository access
-- **Bedrock:** Model access permissions
-
-## 6. Security and Compliance
-
-### IAM Role Structure
-```json
-{
-  "OpenOpsExecutionRole": {
-    "AssumeRolePolicyDocument": {
-      "Version": "2012-10-17",
-      "Statement": [{
-        "Effect": "Allow",
-        "Principal": {"Service": "ec2.amazonaws.com"},
-        "Action": "sts:AssumeRole"
-      }]
-    },
-    "Policies": ["CloudOpsAutomation", "FinOpsRemediation"]
-  }
-}
-```
-
-### Security Controls
-- Least privilege access principles
-- Approval workflows for destructive actions
-- Audit logging via CloudTrail
-- Encrypted communication channels
-- Secret management via AWS Secrets Manager
-
-## 7. Scalability and Performance
-
-### Current Scope (Pilot)
-- Single AWS account (052236698216)
-- OpenOps instance: i-04216b668db9a2b73
-- 20 use cases maximum
-- Manual approval workflows
-- Basic notification channels
-
-### Production Scalability
-- Multi-account support via cross-account roles
-- Automated policy deployment
-- High-availability OpenOps deployment
-- Load balancing for API endpoints
-
-### Performance Targets
-- Event processing: <30 seconds
-- Remediation execution: <5 minutes
-- Notification delivery: <10 seconds
-- Policy evaluation: <15 seconds
-
-## 8. Cost Optimization Opportunities
-
-### OpenOps vs Archera Comparison
-| Feature | OpenOps (Open Source) | Archera | Notes |
-|---------|----------------------|---------|-------|
-| License Cost | $0 | $X/month | Evaluate paid features |
-| Automation | High | Medium | Custom workflows |
-| AI Integration | Bedrock | Built-in | AWS native vs proprietary |
-| Multi-cloud | Limited | Yes | AWS-focused vs multi-cloud |
-
-### Cost Savings Potential
-- Automated rightsizing: 15-30% EC2 costs
-- Idle resource cleanup: 10-20% overall costs
-- Proactive monitoring: Prevent cost spikes
-- Policy enforcement: Consistent tagging/governance
-
-## 9. Implementation Checklist
+## Implementation Status
 
 ### Phase 1 Foundation - ✅ COMPLETE
-- [x] AWS account access (052236698216)
-- [x] OpenOps deployed on i-04216b668db9a2b73 (t3.large)
+- [x] OpenOps deployed (i-04216b668db9a2b73, t3.large)
 - [x] Enhanced IAM permissions (OpenOpsAutomationPolicy)
-- [x] AWS service integrations validated (EC2, S3, Cost Explorer, CloudWatch)
-- [x] CloudWatch Events configured (EC2, EBS, Cost Anomaly)
-- [x] SNS notifications set up (openops-finops-notifications)
-- [x] Budget monitoring active ($1000 daily threshold)
-- [x] GitHub repository and documentation complete
-- [ ] Slack webhook integration (configuration pending)
+- [x] AWS integrations validated (EC2, S3, Cost Explorer, CloudWatch)
+- [x] CloudWatch Events + SNS configured
+- [x] Budget monitoring active ($1000 daily)
+- [x] Terraform infrastructure deployed
 
-### Phase 2 Tasks - 🔄 IN PROGRESS
-- [ ] Configure Slack webhook URL and test notifications
-- [ ] Implement idle EC2 detection workflow
-- [ ] Set up cost threshold alert automation
-- [ ] Deploy EBS volume cleanup policies
-- [ ] Test end-to-end remediation workflows
-- [ ] Validate performance targets (<30s event processing)
+### Phase 2 Core Use Cases - 🔄 IN PROGRESS
+- [ ] Slack webhook integration
+- [ ] Idle EC2 detection workflow
+- [ ] Cost threshold automation
+- [ ] EBS cleanup policies
+- [ ] End-to-end testing
 
-### Success Criteria
-- 20 use cases successfully implemented
-- <5 minute average remediation time
-- 95% notification delivery success
-- Positive ROI vs Archera comparison
+## Technology Stack
 
-## 10. Risk Assessment
+**Platform**: OpenOps (open-source) on AWS EC2  
+**IaC**: Terraform modules  
+**Integrations**: Slack, Jira, GitHub, Bedrock AI  
+**Monitoring**: CloudWatch Events, SNS, Budget alerts
 
-### Technical Risks
-- **Open source limitations:** May require paid upgrade
-- **Integration complexity:** Multiple API dependencies
-- **Performance bottlenecks:** Single EC2 instance deployment
+## Security & Permissions
 
-### Mitigation Strategies
-- Parallel evaluation of paid features
-- Phased integration approach
-- Auto-scaling group for production deployment
+**IAM Role**: openops-instance-role with OpenOpsAutomationPolicy  
+**Permissions**: EC2, EBS, S3, CloudWatch, Cost Explorer, Config, Bedrock  
+**Security**: Least privilege, approval workflows, CloudTrail audit
+
+## Performance Targets
+
+- Event processing: <30 seconds
+- Remediation execution: <5 minutes  
+- Notification delivery: <10 seconds
+- 95% automation success rate
+
+## Cost Comparison
+
+| Feature | OpenOps | Archera |
+|---------|---------|---------|
+| License | $0 (open source) | Paid |
+| Automation | High (custom) | Medium |
+| AI Integration | AWS Bedrock | Built-in |
+| Multi-cloud | AWS-focused | Yes |
+
+**Expected Savings**: 15-30% through automated rightsizing and cleanup
 
 ## Next Steps
 
-1. **Architecture Review:** Team validation by July 9
-2. **Pilot Deployment:** Core workflows by July 14
-3. **Evaluation Report:** Comparative analysis by July 16
-4. **Final Decision:** Go/No-go recommendation by July 18
-
----
-
-**Document Version:** 1.0  
-**Last Updated:** Based on July 7, 2025 kickoff meeting  
-**Next Review:** July 9, 2025
+**Phase 2**: Implement core use cases and Slack integration  
+**Phase 3**: Advanced AI and ITSM workflows  
+**Phase 4**: Final evaluation and decision by July 18, 2025
