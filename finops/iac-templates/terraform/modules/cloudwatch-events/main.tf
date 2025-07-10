@@ -46,18 +46,11 @@ resource "aws_cloudwatch_event_rule" "ebs_events" {
   tags = var.tags
 }
 
-# HTTP Target for OpenOps (mock endpoint)
+# SNS Target for OpenOps events (simplified approach)
 resource "aws_cloudwatch_event_target" "openops_ec2" {
   rule      = aws_cloudwatch_event_rule.ec2_state_change.name
   target_id = "OpenOpsEC2Target"
-  arn       = "arn:aws:events:${var.region}:${var.account_id}:destination/openops-webhook"
-  
-  http_parameters {
-    header_parameters = {
-      "X-Event-Source" = "aws.ec2"
-      "Content-Type"   = "application/json"
-    }
-  }
+  arn       = aws_sns_topic.openops_notifications.arn
 }
 
 # SNS Topic for OpenOps notifications (alternative to HTTP)

@@ -51,8 +51,9 @@ resource "aws_budgets_budget" "openops_daily_budget" {
   limit_unit   = "USD"
   time_unit    = "DAILY"
   
-  cost_filters = {
-    Service = ["Amazon Elastic Compute Cloud - Compute"]
+  cost_filter {
+    name   = "Service"
+    values = ["Amazon Elastic Compute Cloud - Compute"]
   }
 
   notification {
