@@ -36,11 +36,92 @@ resource "aws_ecs_task_definition" "openops" {
   container_definitions = jsonencode([
     {
       name  = "openops"
-      image = "python:3.9-slim"
+      image = "amazonlinux:2"
       
       command = [
         "sh", "-c",
-        "echo 'OpenOps container running on port 8080' && python3 -m http.server 8080"
+        <<-EOF
+        # Install dependencies
+        yum update -y
+        yum install -y python3 curl unzip amazon-ssm-agent git
+        
+        # Install AWS CLI
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        ./aws/install
+        
+        # Start SSM Agent
+        systemctl start amazon-ssm-agent
+        
+        # Clone GitHub repo for policies and scripts
+        cd /opt
+        git clone https://github.com/glenn-gray/cloudelligent-customer-implementations.git
+        
+        # Set up OpenOps directory structure
+        mkdir -p /opt/openops/{policies,test-scripts}
+        
+        # Copy policies and scripts from repo
+        cp /opt/cloudelligent-customer-implementations/Cloudelligent-Production-infra/finops/iac-templates/openops/policies/* /opt/openops/policies/ 2>/dev/null || echo "No policies found in repo"
+        cp /opt/cloudelligent-customer-implementations/Cloudelligent-Production-infra/finops/iac-templates/openops/test-scripts/* /opt/openops/test-scripts/ 2>/dev/null || echo "No test scripts found in repo"
+        chmod +x /opt/openops/test-scripts/*.sh 2>/dev/null || echo "No shell scripts to make executable"
+        
+        # Create OpenOps server
+        cat > /opt/openops/server.py << 'PYTHON'
+import http.server
+import socketserver
+import json
+import os
+from urllib.parse import urlparse
+
+class OpenOpsHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/api/status':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            response = {"status": "healthy", "version": "1.0.0", "platform": "ECS"}
+            self.wfile.write(json.dumps(response).encode())
+        elif self.path == '/health':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(b'OK')
+        elif self.path.startswith('/policies'):
+            if self.path == '/policies/' or self.path == '/policies':
+                # List available policies
+                policy_files = [f for f in os.listdir('/opt/openops/policies') if f.endswith('.json')]
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                response = {"policies": policy_files}
+                self.wfile.write(json.dumps(response).encode())
+            else:
+                # Serve specific policy file
+                policy_name = self.path.split('/')[-1]
+                policy_path = f'/opt/openops/policies/{policy_name}'
+                if os.path.exists(policy_path):
+                    with open(policy_path, 'r') as f:
+                        self.send_response(200)
+                        self.send_header('Content-type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(f.read().encode())
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+        else:
+            super().do_GET()
+
+with socketserver.TCPServer(("", 8080), OpenOpsHandler) as httpd:
+    print("OpenOps ECS service running on port 8080")
+    print("Available policies:", os.listdir('/opt/openops/policies'))
+    print("Available test scripts:", os.listdir('/opt/openops/test-scripts'))
+    httpd.serve_forever()
+PYTHON
+        
+        # Start OpenOps service
+        cd /opt/openops
+        python3 server.py
+        EOF
       ]
       
       portMappings = [
@@ -65,6 +146,10 @@ resource "aws_ecs_task_definition" "openops" {
           awslogs-stream-prefix = "ecs"
         }
       }
+
+      linuxParameters = {
+        initProcessEnabled = true
+      }
     }
   ])
 
@@ -78,11 +163,12 @@ resource "aws_ecs_service" "openops" {
   task_definition = aws_ecs_task_definition.openops.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+  enable_execute_command = true
 
   network_configuration {
     subnets          = var.private_subnet_ids
     security_groups  = [aws_security_group.openops_ecs.id]
-    assign_public_ip = false
+    assign_public_ip = true
   }
 
   tags = var.tags
@@ -142,6 +228,12 @@ resource "aws_iam_role" "ecs_execution" {
 resource "aws_iam_role_policy_attachment" "ecs_execution" {
   role       = aws_iam_role.ecs_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# Additional policy for ECS Exec (SSM)
+resource "aws_iam_role_policy_attachment" "ecs_exec" {
+  role       = aws_iam_role.ecs_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 # Outputs

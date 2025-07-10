@@ -1,38 +1,39 @@
 {
-  "name": "daily-cost-threshold",
-  "description": "Alert when daily spend exceeds threshold",
+  "name": "cost-threshold-monitoring",
+  "description": "Monitor daily cost thresholds and send alerts",
   "trigger": {
     "type": "scheduled",
-    "schedule": "0 0 * * *",
+    "schedule": "0 8 * * *",
     "source": "cost-explorer"
   },
   "conditions": {
-    "daily_spend": {
-      "threshold": 1000,
-      "operator": "greater_than",
-      "currency": "USD"
-    }
+    "and": [
+      {
+        "metric": "DailyCost",
+        "namespace": "AWS/Billing",
+        "threshold": 1000,
+        "operator": "greater_than",
+        "currency": "USD"
+      }
+    ]
   },
   "actions": [
     {
       "type": "notification",
       "target": "slack",
-      "channel": "#finops-alerts",
-      "message": "🚨 Daily spend alert: ${{daily_cost}} exceeds threshold of $1000"
+      "message": "🚨 Daily cost threshold exceeded: ${{daily_cost}} > $1000"
+    },
+    {
+      "type": "notification",
+      "target": "sns",
+      "topic_arn": "arn:aws:sns:us-east-1:052236698216:openops-finops-notifications"
     },
     {
       "type": "ticket",
       "target": "jira",
       "project": "FINOPS",
-      "priority": "High",
-      "summary": "Daily cost threshold exceeded: ${{daily_cost}}",
-      "description": "Daily AWS spend of ${{daily_cost}} has exceeded the configured threshold of $1000. Review usage and take corrective action."
-    },
-    {
-      "type": "email",
-      "recipients": ["glenn.gray@cloudelligent.com", "muhammad.waleed@cloudelligent.com"],
-      "subject": "AWS Cost Alert - Daily Threshold Exceeded",
-      "body": "Daily spend: ${{daily_cost}}\nThreshold: $1000\nAccount: 052236698216"
+      "summary": "Cost threshold alert: ${{daily_cost}}",
+      "priority": "High"
     }
   ]
 }
