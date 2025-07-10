@@ -1,0 +1,62 @@
+{
+  "name": "idle-ec2-detection",
+  "description": "Detect and stop idle EC2 instances",
+  "trigger": {
+    "type": "scheduled",
+    "schedule": "0 */6 * * *",
+    "source": "cloudwatch-metrics"
+  },
+  "conditions": {
+    "and": [
+      {
+        "metric": "CPUUtilization",
+        "namespace": "AWS/EC2",
+        "threshold": 5,
+        "operator": "less_than",
+        "duration": "24h"
+      },
+      {
+        "instance_state": "running"
+      },
+      {
+        "tag_filter": {
+          "Environment": ["dev", "test"]
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "notification",
+      "target": "slack",
+      "message": "Idle EC2 instance detected: {{instance_id}} - CPU < 5% for 24h"
+    },
+    {
+      "type": "approval_request",
+      "target": "slack",
+      "timeout": "1h",
+      "approvers": ["@glenn.gray", "@anas.ahmed"]
+    },
+    {
+      "type": "aws_action",
+      "service": "ec2",
+      "action": "stop_instances",
+      "parameters": {
+        "InstanceIds": ["{{instance_id}}"]
+      },
+      "requires_approval": true
+    },
+    {
+      "type": "ticket",
+      "target": "jira",
+      "project": "FINOPS",
+      "summary": "Idle EC2 instance stopped: {{instance_id}}",
+      "description": "Instance {{instance_id}} was automatically stopped due to low CPU utilization ({{cpu_avg}}%) over 24 hours."
+    }
+  ],
+  "rollback": {
+    "enabled": true,
+    "action": "start_instances",
+    "timeout": "24h"
+  }
+}

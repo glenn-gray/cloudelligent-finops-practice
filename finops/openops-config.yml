@@ -1,0 +1,94 @@
+# OpenOps Platform Configuration
+# Instance: i-04216b668db9a2b73 (t3.large, us-east-1a)
+# IAM Role: openops-instance-role
+
+platform:
+  instance_id: i-04216b668db9a2b73
+  region: us-east-1
+  private_ip: 10.0.130.121
+  iam_role: openops-instance-role
+
+aws_services:
+  cloudwatch:
+    enabled: true
+    event_rules:
+      - name: ec2-state-change
+        pattern: '{"source":["aws.ec2"],"detail-type":["EC2 Instance State-change Notification"]}'
+      - name: cost-anomaly
+        pattern: '{"source":["aws.ce"],"detail-type":["Cost Anomaly Detection"]}'
+  
+  cost_explorer:
+    enabled: true
+    api_access: true
+    
+  ec2:
+    enabled: true
+    permissions:
+      - describe
+      - stop
+      - terminate
+      - modify
+      
+  ebs:
+    enabled: true
+    permissions:
+      - describe
+      - delete
+      - create-snapshot
+
+integrations:
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#finops-alerts"
+    notifications:
+      - cost_alerts
+      - remediation_actions
+      - approval_requests
+      
+  jira:
+    url: "https://cloudelligent.atlassian.net"
+    token: "${JIRA_API_TOKEN}"
+    project_key: "FINOPS"
+    
+  github:
+    repo: "glenn-gray/cloudelligent-finops-practice"
+    token: "${GITHUB_TOKEN}"
+
+policies:
+  idle_ec2:
+    enabled: true
+    threshold: 5  # CPU percentage
+    duration: 24  # hours
+    action: stop
+    approval_required: true
+    
+  unattached_ebs:
+    enabled: true
+    duration: 7  # days
+    action: snapshot_and_delete
+    approval_required: false
+    
+  cost_threshold:
+    enabled: true
+    daily_limit: 1000  # USD
+    action: alert
+    escalation: true
+    
+  untagged_resources:
+    enabled: true
+    required_tags:
+      - Environment
+      - Project
+      - Owner
+    action: tag_or_alert
+    
+  public_s3:
+    enabled: true
+    action: remediate
+    approval_required: true
+
+performance_targets:
+  event_processing: 30  # seconds
+  remediation_execution: 300  # seconds (5 minutes)
+  notification_delivery: 10  # seconds
+  policy_evaluation: 15  # seconds
