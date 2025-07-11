@@ -44,3 +44,19 @@ variable "common_tags" {
     Deployment  = "ECS-Fargate"
   }
 }
+
+variable "vpc_id" {
+  description = "VPC ID for resources"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs"
+  type        = list(string)
+}

@@ -1,0 +1,18 @@
+# ADR-004: Pre-stage Workflow Templates and Support Multi-Account Onboarding
+
+## Status
+Accepted
+
+## Context
+OpenOps workflows need to be reusable and support onboarding multiple customer AWS accounts.
+
+## Decision
+- Store workflow templates as JSON files in the repository and ECS container.
+- Enhance OpenOps to support IAM role-based onboarding for multiple customer accounts.
+
+## Consequences
+- Faster onboarding for new customers.
+- Consistent workflow automation across environments.
+
+## Date
+2025-07-11

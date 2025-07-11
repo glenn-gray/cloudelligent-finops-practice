@@ -1,0 +1,20 @@
+# ADR-001: Migrate OpenOps Deployment to ECS Fargate with Application Load Balancer
+
+## Status
+Accepted
+
+## Context
+The OpenOps application was previously deployed on EC2 instances. To improve scalability, security, and operational efficiency, we decided to migrate to AWS ECS Fargate. Additionally, we introduced an Application Load Balancer (ALB) to provide a stable endpoint and support future scaling.
+
+## Decision
+- Deploy OpenOps as an ECS Fargate service.
+- Place an Application Load Balancer (ALB) in front of the ECS service for HTTP traffic routing and health checks.
+- Use an existing security group (`sg-05d7b63b03cb05538`) for both ECS tasks and ALB.
+
+## Consequences
+- Improved scalability and easier management of containerized workloads.
+- Simplified networking and security configuration.
+- ALB provides a single endpoint for the service and supports future scaling.
+
+## Date
+2025-07-11

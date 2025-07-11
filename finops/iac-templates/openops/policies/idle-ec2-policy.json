@@ -1,6 +1,6 @@
 {
-  "name": "idle-ec2-detection",
-  "description": "Detect and stop idle EC2 instances",
+  "name": "Idle EC2 Detection",
+  "description": "Detect and remediate idle EC2 instances.",
   "trigger": {
     "type": "scheduled",
     "schedule": "0 */6 * * *",
@@ -58,5 +58,17 @@
     "enabled": true,
     "action": "start_instances",
     "timeout": "24h"
-  }
+  },
+  "steps": [
+    {
+      "action": "ec2:DescribeInstances",
+      "filter": {
+        "cpuUtilization": "<5%"
+      }
+    },
+    {
+      "action": "ec2:StopInstances",
+      "condition": "idle"
+    }
+  ]
 }

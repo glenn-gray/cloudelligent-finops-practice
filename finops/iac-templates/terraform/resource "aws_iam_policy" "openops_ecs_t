@@ -1,0 +1,35 @@
+resource "aws_iam_policy" "openops_ecs_task_policy" {
+  name        = "OpenOpsECSTaskPolicy"
+  description = "Policy for ECS tasks to access AWS services"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:StopInstances",
+          "ec2:StartInstances",
+          "ec2:DescribeTags",
+          "s3:ListAllMyBuckets",
+          "s3:GetBucketLocation",
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "cloudwatch:GetMetricData",
+          "cloudwatch:ListMetrics",
+          "ce:GetCostAndUsage",
+          "ce:GetCostForecast",
+          "config:DescribeConfigRules",
+          "config:GetComplianceDetailsByConfigRule",
+          "rds:DescribeDBInstances",
+          "rds:StopDBInstance",
+          "rds:StartDBInstance",
+          "rds:ListTagsForResource"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}

@@ -1,5 +1,4 @@
 # ECS Cluster for OpenOps Platform
-# Account: 052236698216, Region: us-east-1
 
 resource "aws_ecs_cluster" "openops" {
   name = "openops-finops-cluster"
@@ -23,7 +22,6 @@ resource "aws_ecs_cluster_capacity_providers" "openops" {
   }
 }
 
-# Task Definition
 resource "aws_ecs_task_definition" "openops" {
   family                   = "openops-finops"
   network_mode             = "awsvpc"
@@ -31,13 +29,12 @@ resource "aws_ecs_task_definition" "openops" {
   cpu                      = 1024
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_execution.arn
-  task_role_arn           = var.openops_task_role_arn
+  task_role_arn            = var.openops_task_role_arn
 
   container_definitions = jsonencode([
     {
       name  = "openops"
       image = "amazonlinux:2"
-      
       command = [
         "sh", "-c",
         <<-EOF
@@ -123,21 +120,18 @@ PYTHON
         python3 server.py
         EOF
       ]
-      
       portMappings = [
         {
           containerPort = 8080
           protocol      = "tcp"
         }
       ]
-
       environment = [
         {
           name  = "AWS_REGION"
           value = var.region
         }
       ]
-
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -146,7 +140,6 @@ PYTHON
           awslogs-stream-prefix = "ecs"
         }
       }
-
       linuxParameters = {
         initProcessEnabled = true
       }
@@ -156,7 +149,6 @@ PYTHON
   tags = var.tags
 }
 
-# ECS Service
 resource "aws_ecs_service" "openops" {
   name            = "openops-finops-service"
   cluster         = aws_ecs_cluster.openops.id
@@ -167,45 +159,27 @@ resource "aws_ecs_service" "openops" {
 
   network_configuration {
     subnets          = var.private_subnet_ids
-    security_groups  = [aws_security_group.openops_ecs.id]
+    security_groups  = [var.openops_ecs_sg_id]
     assign_public_ip = true
   }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.openops_tg.arn
+    container_name   = "openops"
+    container_port   = 8080
+  }
+
+  depends_on = [aws_lb_listener.openops_listener]
 
   tags = var.tags
 }
 
-# Security Group for ECS
-resource "aws_security_group" "openops_ecs" {
-  name_prefix = "openops-ecs-"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = merge(var.tags, {
-    Name = "openops-ecs-sg"
-  })
-}
-
-# CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "openops" {
   name              = "/ecs/openops-finops"
   retention_in_days = 7
   tags              = var.tags
 }
 
-# ECS Execution Role
 resource "aws_iam_role" "ecs_execution" {
   name = "openops-ecs-execution-role"
 
@@ -230,13 +204,50 @@ resource "aws_iam_role_policy_attachment" "ecs_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# Additional policy for ECS Exec (SSM)
 resource "aws_iam_role_policy_attachment" "ecs_exec" {
   role       = aws_iam_role.ecs_execution.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-# Outputs
+resource "aws_lb" "openops_alb" {
+  name               = "openops-finops-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [var.openops_ecs_sg_id]
+  subnets            = var.private_subnet_ids
+  tags               = var.tags
+}
+
+resource "aws_lb_target_group" "openops_tg" {
+  name     = "openops-finops-tg"
+  port     = 8080
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    path                = "/"
+    protocol            = "HTTP"
+    matcher             = "200-399"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
+  tags = var.tags
+}
+
+resource "aws_lb_listener" "openops_listener" {
+  load_balancer_arn = aws_lb.openops_alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.openops_tg.arn
+  }
+}
+
 output "cluster_name" {
   value = aws_ecs_cluster.openops.name
 }
@@ -247,4 +258,8 @@ output "service_name" {
 
 output "task_definition_arn" {
   value = aws_ecs_task_definition.openops.arn
+}
+
+output "alb_dns_name" {
+  value = aws_lb.openops_alb.dns_name
 }

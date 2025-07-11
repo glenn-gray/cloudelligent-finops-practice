@@ -1,0 +1,18 @@
+# ADR-002: Expand IAM Policy for RDS Integration
+
+## Status
+Accepted
+
+## Context
+OpenOps workflows now require access to RDS resources for analytics and idle resource detection. The previous IAM policy did not include RDS permissions.
+
+## Decision
+- Add RDS permissions (`DescribeDBInstances`, `StopDBInstance`, `StartDBInstance`, `ListTagsForResource`) to the ECS task IAM policy.
+- Ensure the IAM role can be used for cross-account access via CloudFormation deployment in customer environments.
+
+## Consequences
+- OpenOps can automate RDS resource management and analytics.
+- Supports future workflows for idle RDS detection and remediation.
+
+## Date
+2025-07-11

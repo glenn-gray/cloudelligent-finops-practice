@@ -1,0 +1,16 @@
+{
+  "name": "Unattached EBS Detection",
+  "description": "Detect and remediate unattached EBS volumes.",
+  "steps": [
+    {
+      "action": "ec2:DescribeVolumes",
+      "filter": {
+        "state": "available"
+      }
+    },
+    {
+      "action": "ec2:DeleteVolume",
+      "condition": "unattached"
+    }
+  ]
+}

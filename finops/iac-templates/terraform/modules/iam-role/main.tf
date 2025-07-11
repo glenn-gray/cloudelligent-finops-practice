@@ -22,14 +22,14 @@ resource "aws_iam_policy" "openops_automation" {
           "ec2:DeleteVolume",
           "ec2:CreateTags",
           "ec2:DescribeTags",
-          
+
           # S3 permissions
           "s3:ListAllMyBuckets",
           "s3:GetBucketPolicy",
           "s3:PutBucketPolicy",
           "s3:GetBucketAcl",
           "s3:PutBucketAcl",
-          
+
           # CloudWatch permissions
           "cloudwatch:GetMetricStatistics",
           "cloudwatch:ListMetrics",
@@ -37,22 +37,28 @@ resource "aws_iam_policy" "openops_automation" {
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          
+
           # Cost Explorer permissions
           "ce:GetCostAndUsage",
           "ce:GetUsageReport",
           "ce:GetReservationCoverage",
           "ce:GetReservationPurchaseRecommendation",
           "ce:GetReservationUtilization",
-          
+
           # Config permissions
           "config:GetComplianceDetailsByConfigRule",
           "config:GetComplianceDetailsByResource",
           "config:DescribeConfigRules",
-          
+
           # Bedrock permissions
           "bedrock:InvokeModel",
-          "bedrock:ListFoundationModels"
+          "bedrock:ListFoundationModels",
+
+          # RDS permissions
+          "rds:DescribeDBInstances",
+          "rds:StopDBInstance",
+          "rds:StartDBInstance",
+          "rds:ListTagsForResource"
         ]
         Resource = "*"
       }

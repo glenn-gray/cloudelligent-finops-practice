@@ -78,3 +78,42 @@ output "event_rules" {
     ebs_events       = aws_cloudwatch_event_rule.ebs_events.name
   }
 }
+
+resource "aws_cloudwatch_event_rule" "rds_idle" {
+  name        = "openops-rds-idle"
+  description = "Detect idle RDS instances for OpenOps"
+
+  event_pattern = jsonencode({
+    source      = ["aws.rds"]
+    detail-type = ["AWS API Call via CloudTrail"]
+    detail = {
+      eventName = ["DescribeDBInstances"]
+    }
+  })
+
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_event_rule" "idle_ec2_rule" {
+  name        = "IdleEC2Detection"
+  description = "Detect idle EC2 instances"
+  event_pattern = jsonencode({
+    "source": ["aws.ec2"],
+    "detail-type": ["AWS API Call via CloudTrail"],
+    "detail": {
+      "eventName": ["DescribeInstances"]
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_rule" "idle_ebs_rule" {
+  name        = "UnattachedEBSDetection"
+  description = "Detect unattached EBS volumes"
+  event_pattern = jsonencode({
+    "source": ["aws.ec2"],
+    "detail-type": ["AWS API Call via CloudTrail"],
+    "detail": {
+      "eventName": ["DescribeVolumes"]
+    }
+  })
+}

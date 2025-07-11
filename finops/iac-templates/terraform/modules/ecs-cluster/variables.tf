@@ -18,6 +18,7 @@ variable "vpc_cidr" {
 variable "private_subnet_ids" {
   description = "Private subnet IDs for ECS tasks"
   type        = list(string)
+  default = [ "subnet-05cf08af9642baef8","subnet-0c9aba56b3f8b3e81" ]
 }
 
 variable "openops_task_role_arn" {
@@ -33,4 +34,10 @@ variable "tags" {
     Environment = "evaluation"
     Owner       = "cloudelligent"
   }
+}
+
+variable "openops_ecs_sg_id" {
+  description = "Security Group ID for OpenOps ECS tasks and ALB"
+  type        = string
+  default     = "sg-05d7b63b03cb05538"
 }

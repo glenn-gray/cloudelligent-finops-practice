@@ -57,6 +57,7 @@ module "ecs_cluster" {
   vpc_cidr              = data.aws_vpc.openops.cidr_block
   private_subnet_ids    = data.aws_subnets.openops.ids
   openops_task_role_arn = module.iam_role.role_arn
+  openops_ecs_sg_id     = "sg-05d7b63b03cb05538"
   tags                  = var.common_tags
 }
 
@@ -76,11 +77,6 @@ resource "aws_budgets_budget" "openops_daily_budget" {
   limit_amount = "1000"
   limit_unit   = "USD"
   time_unit    = "DAILY"
-  
-  cost_filter {
-    name   = "Service"
-    values = ["Amazon Elastic Compute Cloud - Compute"]
-  }
 
   notification {
     comparison_operator        = "GREATER_THAN"
@@ -120,4 +116,8 @@ output "sns_topic_arn" {
 output "budget_name" {
   description = "Name of the created budget"
   value       = aws_budgets_budget.openops_daily_budget.name
+}
+
+output "alb_dns_name" {
+  value = module.ecs_cluster.alb_dns_name
 }

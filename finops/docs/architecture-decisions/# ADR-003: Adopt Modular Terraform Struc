@@ -1,0 +1,18 @@
+# ADR-003: Adopt Modular Terraform Structure
+
+## Status
+Accepted
+
+## Context
+The initial Terraform configuration mixed resource definitions in the root module, making maintenance and scaling difficult.
+
+## Decision
+- Move all resource definitions (ECS, ALB, IAM, CloudWatch Events) into dedicated module directories.
+- Root `main.tf` now only calls modules and handles outputs.
+
+## Consequences
+- Improved maintainability and clarity of infrastructure code.
+- Easier to extend and reuse modules for future environments.
+
+## Date
+2025-07-11

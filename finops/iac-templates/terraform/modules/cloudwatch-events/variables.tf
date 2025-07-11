@@ -19,9 +19,5 @@ variable "openops_instance_ip" {
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
-  default = {
-    Project     = "OpenOps-FinOps-Evaluation"
-    Environment = "evaluation"
-    Owner       = "cloudelligent"
-  }
+  default     = {}
 }

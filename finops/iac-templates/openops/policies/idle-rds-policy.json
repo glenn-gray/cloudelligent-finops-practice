@@ -1,0 +1,16 @@
+{
+  "name": "Idle RDS Detection",
+  "description": "Detect and remediate idle RDS instances.",
+  "steps": [
+    {
+      "action": "rds:DescribeDBInstances",
+      "filter": {
+        "cpuUtilization": "<5%"
+      }
+    },
+    {
+      "action": "rds:StopDBInstance",
+      "condition": "idle"
+    }
+  ]
+}
